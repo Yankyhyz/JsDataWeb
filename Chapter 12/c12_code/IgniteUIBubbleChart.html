@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bubble Chart With Symbols</title>
+
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script src="jquery-ui-1.11.1/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="IgniteUI/css/themes/infragistics/infragistics.theme.css" />
+    <link rel="stylesheet" href="IgniteUI/css/structure/infragistics.css" />
+    <link rel="stylesheet" href="IgniteUI/css/structure/modules/infragistics.ui.chart.css" />
+    <script src="IgniteUI/js/infragistics.core.js"></script>
+    <script src="IgniteUI/js/infragistics.dv.js"></script>
+
+    <link rel="stylesheet" href="IgniteUIBubbleChart.css" />
+
+    <script id="tooltipTemplate" type="text/x-jquery-tmpl">
+        <span>
+            Saturated Fat Vs. Calories
+        </span>
+        <br>
+        <span>Name: </span>
+        <span class='ui-priority-primary'>
+            ${item.displayName}
+        </span>
+        <br>
+        <span>Saturated Fat: </span>
+        <span class='ui-priority-primary'>
+            ${item.saturatedFat}
+        </span>
+        <br>
+        <span>Calories: </span>
+        <span class='ui-priority-primary'>
+            ${item.calories}
+        </span>
+        <br>
+        <span>Milk: </span>
+        <span class='ui-priority-primary'>
+            ${item.milk}
+        </span>
+    </script>
+</head>
+<body>
+    <div id="chart"></div>
+    
+    <script type="text/javascript" src="IgniteUIBubbleChart.js">
+    </script>
+
+</body>
+</html>

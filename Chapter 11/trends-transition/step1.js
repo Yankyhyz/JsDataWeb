@@ -1,0 +1,1 @@
+updateTrends(trends1)

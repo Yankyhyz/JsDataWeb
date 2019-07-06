@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<title>US Census - Household Tenure Chart</title>
+</head>
+
+<body>
+
+<!-- make sure to include your API key below -->
+
+<div id="tenure-chart"></div>
+
+<script src="js/jquery.min.js"></script>
+
+<script>
+var api_key = "[your API key]";
+
+if ( /\s/.test(api_key) ) {
+  alert("You must enter your API key from www.census.gov/developers/");
+}
+
+function renderCharts() {
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: "H0110002,H0110003,H0110004",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var processed = [
+        ["Tenure", "Housing Units"],
+        ["Owned with Mortgage", ~~data[1][0]],
+        ["Owned Outright", ~~data[1][1]],
+        ["Rented", ~~data[1][2]]
+      ];
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Housing Tenure",
+        pieHole: 0.8,
+        pieSliceText: "none"
+      };
+
+      var chart = new google.visualization.PieChart(
+        document.getElementById("tenure-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+}
+</script>
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(renderCharts);
+</script> 
+</body>
+</html>

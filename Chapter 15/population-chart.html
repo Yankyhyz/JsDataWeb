@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<title>US Census - Population History Chart</title>
+</head>
+
+<body>
+
+<!-- make sure to include your API key below -->
+
+<div id="population-chart"></div>
+
+<script src="js/jquery.min.js"></script>
+
+<script>
+var api_key = "[your API key]";
+
+if ( /\s/.test(api_key) ) {
+  alert("You must enter your API key from www.census.gov/developers/");
+}
+
+function renderCharts() {
+  $.ajax({
+    url: "http://api.census.gov/data/2013/pep/natstprc",
+    data: {
+      get: "POP,DATE",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var processed = [
+        ["Year", "Population"]
+      ];
+  
+      for ( i in data ) {
+        if ( i == 0 ) continue;
+        processed[i] = [ ~~data[i][1] + 2007, ~~data[i][0] ];
+      }
+
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Population Growth",
+        legend: "none"
+      };
+
+      var chart = new google.visualization.LineChart(
+        document.getElementById("population-chart")
+      );
+      chart.draw(chartData, options);
+    }
+  });
+}
+</script>
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(renderCharts);
+</script> 
+</body>
+</html>

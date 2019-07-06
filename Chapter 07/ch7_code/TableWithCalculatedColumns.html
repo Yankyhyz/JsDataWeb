@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table With Calculated Columns</title>
+
+<script src="jquery/jquery-1.11.1.min.js"></script>
+
+<style type="text/css">
+table {
+        border-collapse: collapse;
+        border: 1px solid #4C4C4C;
+}
+th, td {
+    border: 1px dotted #707070;
+}
+th {
+    background: #C2F0C2;
+    padding: 5px;
+}
+thead th {
+    background: #9BC09B;
+}
+caption {
+    background: #4C4C4C;
+    padding: 5px;
+    color: white;
+}
+th[scope=col] {
+    border-bottom: 2px solid #707070;
+}
+th[scope=row] {
+    border-right: 2px solid #707070;
+    text-align: left;
+}
+td {
+    padding: 5px;
+}
+tfoot th {
+    background: #BBBBD1;
+}
+tfoot td {
+    background: #CFCFDF;
+    color: #8D1919;
+}
+.row-odd {
+    background: #DBDBDB;
+}
+.row-odd th {
+    background: #A2D0A2;
+}
+.cell-number {
+    text-align: right;
+}
+
+td.highlight {
+    background: #FF944D;
+}
+
+th.highlight {
+    background: #B26836;
+}
+
+</style>
+
+<script type="text/javascript">
+    function usCurrencyToFloat(currency) {
+        currency = currency.replace(/\$/g, '');
+        currency = currency.replace(/,/g, '');
+        return parseFloat(currency);
+    }
+    
+    function floatToUSCurrency(value) {
+        var numString = value.toFixed(2),
+        parts = numString.split('.'),
+        outParts = [],
+        beforeDecimal = "0",
+        afterDecimal = "00",
+        currSegment;
+        
+        beforeDecimal = parts[0];
+        afterDecimal = parts[1];
+        
+        while (beforeDecimal.length > 3) {
+            currSegment = beforeDecimal.substring(
+                beforeDecimal.length - 3, 
+                beforeDecimal.length);
+            beforeDecimal = beforeDecimal.substring(
+                0, 
+                beforeDecimal.length - 3);
+            outParts.unshift(currSegment);
+        }
+        if (beforeDecimal.length > 0) {
+            outParts.unshift(beforeDecimal);
+        }
+        
+        return '$' + outParts.join(',') + '.' + afterDecimal;
+    }
+    
+    function populateCalculatedColumn(
+        tableSelector,
+        toPopulateIndex,
+        toPopulateHeader,
+        calculation,
+        parse,
+        toString) {
+        var columns = [],
+        rows = $(tableSelector).find("tbody").find("tr"),
+        headers, tableInfo = {},
+        headerRow = $(tableSelector).find("thead").find("tr"),
+        newColumn, header,
+        footerRow = $(tableSelector).find("tfoot").find("tr");
+        
+        rows.each(function (index, row) {
+            $(this).children().each(function (index, cell) {
+                var currColumn;
+                if ((columns.length - 1) < index) {
+                    columns.push([]);
+                }
+                currColumn = columns[index];
+                currColumn.push(parse($(this).text()));
+            });
+        });
+        
+        tableInfo.columns = columns;
+        
+        headers = headerRow.find("th");
+        headers.each(function (index, header) {
+            tableInfo[$(this).text()] = columns[index];
+        });
+        
+        newColumn = calculation(tableInfo);
+        
+        rows.each(function (index, row) {
+            var thisRow = $(this);
+            while ((thisRow.children().length - 1) < toPopulateIndex) {
+                thisRow.append($("<td></td>"));
+            }
+            cell = thisRow.children().eq(toPopulateIndex);
+            cell.text(toString(newColumn[index]));
+        });
+        
+        while ((headerRow.children().length - 1) < toPopulateIndex) {
+            headerRow.append($("<th scope='col'></th>"));
+        }
+        header = headerRow.children().eq(toPopulateIndex);
+        header.text(toPopulateHeader);
+        
+        while ((footerRow.children().length - 1) < toPopulateIndex) {
+            footerRow.append($("<td></td>"));
+        }
+        if (newColumn.length > rows.length) {
+            footerRow.children.eq(toPopulateIndex).text(
+                toString(newColumn[rows.length]));
+        }
+    }
+
+    $(function () {
+        $(document.body).on("mouseover", "td, th", function () {
+            var index = $(this).index(),
+            row = $(this).parent(),
+            trs = $("tr"), i;
+            
+            row.children().addClass("highlight");
+            for (var i = 0; i < trs.length; i++) {
+                trs.eq(i)
+                    .children()
+                    .eq(index)
+                    .addClass("highlight");
+            }
+        });
+        
+        $(document.body).on("mouseout", "td, th", function () {
+            var index = $(this).index(),
+            row = $(this).parent(),
+            trs = $("tr"), i;
+            
+            row.children().removeClass("highlight");
+            for (var i = 0; i < trs.length; i++) {
+                trs.eq(i)
+                    .children()
+                    .eq(index)
+                    .removeClass("highlight");
+            }
+        });
+        
+populateCalculatedColumn(
+    "table",
+    2,
+    "Mean",
+    function (tableInfo) {
+        var sum = 0, mean, newColumn = [];
+        for (var i = 0; i < tableInfo.Sales.length; i++) {
+            sum += tableInfo.Sales[i];
+        }
+        mean = sum / tableInfo.Sales.length;
+        for (var i = 0; i < tableInfo.Sales.length; i++) {
+            newColumn.push(mean);
+        }
+        return newColumn;
+    },
+    usCurrencyToFloat,
+    floatToUSCurrency);
+        
+        populateCalculatedColumn(
+            "table",
+            3,
+            "Difference",
+            function (tableInfo) {
+                var newColumn = [];
+                for (var i = 0; i < tableInfo.Sales.length; i++) {
+                    newColumn.push(
+                        tableInfo.Sales[i] - tableInfo.Mean[i]
+                    );
+                }
+                return newColumn;
+            },
+            usCurrencyToFloat,
+            floatToUSCurrency);
+            
+        populateCalculatedColumn(
+            "table",
+            4,
+            "Squared Difference",
+            function (tableInfo) {
+                var newColumn = [];
+                for (var i = 0; i < tableInfo.Sales.length; i++) {
+                    newColumn.push(
+                        tableInfo.Difference[i] *
+                        tableInfo.Difference[i]
+                    );
+                }
+                return newColumn;
+            },
+            usCurrencyToFloat,
+            floatToUSCurrency);
+        
+        $("tbody").find("tr:odd").addClass("row-odd");
+        $("tbody").find("td").filter(function (index) {
+            return !isNaN(usCurrencyToFloat($(this).text()));
+        }).addClass("cell-number");
+    });
+</script>
+
+</head>
+<body>
+
+<table>
+    <caption>Sales By Region</caption>
+    <colgroup>
+        <col class="col-header">
+        <col class="col-amount">
+        <col class="col-mean">
+    </colgroup>
+    <thead>
+        <tr>
+            <th scope="col">Region</th> 
+            <th scope="col">Sales</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th scope="row">Sum</th>
+            <td>$1,000,000</td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <tr>
+        <th scope="row">Northeast</th>
+        <td>$100,000</td>
+    </tr>
+    <tr>
+        <th scope="row">Southeast</th>
+        <td>$75,000</td>
+    </tr>
+    <tr>
+        <th scope="row">Midwest</th>
+        <td>$125,000</td>
+    </tr>
+    <tr>
+        <th scope="row">Mid-Atlantic</th>
+        <td>$125,000</td>
+    </tr>
+    <tr>
+        <th scope="row">Southwest</th>
+        <td>$75,000</td>
+    </tr>
+    <tr>
+        <th scope="row">Northwest</th>
+        <td>$100,000</td>
+    </tr>
+    <tr>
+        <th scope="row">California</th>
+        <td>$400,000</td>
+    </tr>
+    </tbody>
+    
+</table>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+body {
+  font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.point {
+  fill: #F3F3F3;
+  stroke: #333333;
+}
+
+.hover {
+  pointer-events: none;
+}

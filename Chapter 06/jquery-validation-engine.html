@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<title>jQuery Validation Engine</title>
+
+<link rel="stylesheet" href="css/validationEngine.jquery.css">
+
+<style>
+form {
+  padding: 3em;
+  overflow: hidden;
+}
+
+label {
+  float: left;
+  clear: left;
+  width: 10em;
+  margin-right: 1em;
+  line-height: 1.8em;
+  text-align: right;
+}
+
+input:not([type=submit]) {
+  padding: .5em;
+  margin-bottom: 1em;
+  width: 12em;
+  display: block;
+}
+
+input[type=submit] {
+  font-size: 1em;
+  margin-left: 11em;
+}
+</style>
+</head>
+
+<body>
+
+<script src="js/jquery-1.8.2.min.js"></script>
+<script src="js/jquery.validationEngine-en.js"></script>
+<script src="js/jquery.validationEngine.js"></script>
+
+<form class="my-form" novalidate>
+  <label>Email</label>
+  <input type="email" name="email" data-validation-engine="validate[required,custom[email]]">
+  
+  <label>Date</label>
+  <input type="date" name="past-date" data-validation-engine="validate[custom[date],past[NOW]]">
+
+  <label>Password</label>
+  <input type="password" name="my-password">
+
+  <label>Confirm Password</label>
+  <input type="password" name="confirm-password" data-validation-engine="validate[equals[my-password]]">
+
+  <label>Start Date</label>
+  <input type="date" name="start-date" data-validation-engine="validate[future[NOW]]">
+
+  <label>End Date</label>
+  <input type="date" name="end-date" data-validation-engine="validate[future[start-date]]">
+
+  <label>Fruit</label>
+  <input type="text" name="fruit" data-validation-engine="validate[funcCall[checkFruit]]">
+
+  <input type="submit">
+</form>
+
+<script>
+function checkFruit(field, rules, i, options){
+  var fruits = ["apple", "banana", "pear", "orange"];
+
+  if (fruits.indexOf(field) == -1) {
+     return "Must be a piece of fruit"; 
+  }
+}
+
+$(".my-form").validationEngine();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<title>gRaphael - Custom Donut Chart</title>
+
+<style>
+div {
+  margin: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="donut-chart"></div>
+
+<!-- raphael core -->
+<script src="js/raphael-min.js"></script>
+
+<!-- donut chart plugin --> 
+<script src="js/g.donut.js"></script>
+
+<script>
+
+var paper = Raphael(document.getElementById('donut-chart'), 400, 400);
+
+var donut = paper.donutChart(200, 200, 100, [120, 45, 20, 5], {
+  labels: [
+    'tacos',
+    'pizzas',
+    'burgers',
+    'salads'
+  ]
+});
+</script>
+</body>
+</html>

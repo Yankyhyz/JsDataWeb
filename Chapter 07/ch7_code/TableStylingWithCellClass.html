@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table With Styled Semantic Markup And Per-Cell Class</title>
+
+<style type="text/css">
+table {
+        border-collapse: collapse;
+        border: 1px solid #4C4C4C;
+}
+th, td {
+    border: 1px dotted #707070;
+}
+th {
+    background: #C2F0C2;
+    padding: 5px;
+}
+thead th {
+    background: #9BC09B;
+}
+caption {
+    background: #4C4C4C;
+    padding: 5px;
+    color: white;
+}
+th[scope=col] {
+    border-bottom: 2px solid #707070;
+}
+th[scope=row] {
+    border-right: 2px solid #707070;
+    text-align: left;
+}
+td {
+    padding: 5px;
+}
+tfoot th {
+    background: #BBBBD1;
+}
+tfoot td {
+    background: #CFCFDF;
+    color: #8D1919;
+}
+.number-cell {
+    text-align: right;
+}
+</style>
+</head>
+<body>
+
+<table>
+    <caption>Sales By Region</caption>
+    <colgroup>
+        <col class="col-header">
+        <col class="col-amount">
+        <col class="col-mean">
+    </colgroup>
+    <thead>
+        <tr>
+            <th scope="col">Region</th> 
+            <th scope="col">Sales</th>
+            <th scope="col">Mean</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th scope="row">Sum</th>
+            <td class="number-cell">$1,000,000</td>
+            <td></td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <tr>
+        <th scope="row">Northeast</th>
+        <td class="number-cell">$100,000</td>
+        <td class="number-cell">$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Southeast</th>
+        <td class="number-cell">$75,000</td>
+        <td class="number-cell">$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Midwest</th>
+        <td class="number-cell">$125,000</td>
+        <td class="number-cell">$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Mid-Atlantic</th>
+        <td class="number-cell">$125,000</td>
+        <td class="number-cell">$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Southwest</th>
+        <td class="number-cell">$75,000</td>
+        <td class="number-cell">$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Northwest</th>
+        <td class="number-cell">$100,000</td>
+        <td class="number-cell">$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">California</th>
+        <td class="number-cell">$400,000</td>
+        <td class="number-cell">$142,857</td>
+    </tr>
+    </tbody>
+    
+</table>
+
+</body>
+</html>

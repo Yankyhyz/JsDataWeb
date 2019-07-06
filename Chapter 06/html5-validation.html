@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<title>Native HTML5 Validation</title>
+
+<style>
+form {
+  padding: 3em;
+  overflow: hidden;
+}
+
+label {
+  float: left;
+  clear: left;
+  width: 10em;
+  margin-right: 1em;
+  line-height: 1.8em;
+  text-align: right;
+}
+
+input:not([type=submit]) {
+  padding: .5em;
+  margin-bottom: 1em;
+  width: 12em;
+  display: block;
+}
+
+input[type=submit] {
+  font-size: 1em;
+  margin-left: 11em;
+}
+</style>
+</head>
+
+<body>
+
+<form>
+  <label>Email</label>
+  <input type="email">
+  
+  <label>Number</label>
+  <input type="number" min="0" max="10" step="0.5">
+  
+  <label>Required Field</label>
+  <input type="text" required>
+  
+  <label>5 Characters Max</label>
+  <input type="text" maxlength="5">
+  
+  <label>Letters Only</label>
+  <input type="text" pattern="[a-zA-Z]+" oninvalid="setCustomValidity('Please enter only letters.')">
+  
+  <input type="submit">
+</form>
+
+</body>
+</html>

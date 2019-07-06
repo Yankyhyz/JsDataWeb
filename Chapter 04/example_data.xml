@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <sales>
+    <region>
+	  <territory>Northeast</territory>
+	  <employees>150</employees>
+	  <year>
+	    <date>2013</date>
+		<amount>115000</amount>
+	  </year>
+	</region>
+    <region>
+	  <territory>Southeast</territory>
+	  <employees>125</employees>
+	  <year>
+	    <date>2013</date>
+		<amount>95000</amount>
+	  </year>
+	</region>
+  </sales>

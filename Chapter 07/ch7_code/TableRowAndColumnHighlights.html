@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table Row and Column Highlights</title>
+
+<script src="jquery/jquery-1.11.1.min.js"></script>
+
+<style type="text/css">
+table {
+        border-collapse: collapse;
+        border: 1px solid #4C4C4C;
+}
+th, td {
+    border: 1px dotted #707070;
+}
+th {
+    background: #C2F0C2;
+    padding: 5px;
+}
+thead th {
+    background: #9BC09B;
+}
+caption {
+    background: #4C4C4C;
+    padding: 5px;
+    color: white;
+}
+th[scope=col] {
+    border-bottom: 2px solid #707070;
+}
+th[scope=row] {
+    border-right: 2px solid #707070;
+    text-align: left;
+}
+td {
+    padding: 5px;
+}
+tfoot th {
+    background: #BBBBD1;
+}
+tfoot td {
+    background: #CFCFDF;
+    color: #8D1919;
+}
+.row-odd {
+    background: #DBDBDB;
+}
+.row-odd th {
+    background: #A2D0A2;
+}
+.cell-number {
+    text-align: right;
+}
+
+td.highlight {
+    background: #FF944D;
+}
+
+th.highlight {
+    background: #B26836;
+}
+
+</style>
+
+<script type="text/javascript">
+    function usCurrencyToFloat(currency) {
+        currency = currency.replace(/\$/g, '');
+        currency = currency.replace(/,/g, '');
+        return parseFloat(currency);
+    }
+
+    $(function () {
+        $("tbody").find("tr:odd").addClass("row-odd");
+        $("tbody").find("td").filter(function (index) {
+            return !isNaN(usCurrencyToFloat($(this).text()));
+        }).addClass("cell-number");
+        
+        
+$(document.body).on("mouseover", "td, th", function () {
+    var index = $(this).index(),
+    row = $(this).parent(),
+    trs = $("tr");
+    
+    row.children().addClass("highlight");
+    for (var i = 0; i < trs.length; i++) {
+        trs.eq(i)
+            .children()
+            .eq(index)
+            .addClass("highlight");
+    }
+});
+
+$(document.body).on("mouseout", "td, th", function () {
+    var index = $(this).index(),
+    row = $(this).parent(),
+    trs = $("tr");
+    
+    row.children().removeClass("highlight");
+    for (var i = 0; i < trs.length; i++) {
+        trs.eq(i)
+            .children()
+            .eq(index)
+            .removeClass("highlight");
+    }
+});
+    });
+</script>
+
+</head>
+<body>
+
+<table>
+    <caption>Sales By Region</caption>
+    <colgroup>
+        <col class="col-header">
+        <col class="col-amount">
+        <col class="col-mean">
+    </colgroup>
+    <thead>
+        <tr>
+            <th scope="col">Region</th> 
+            <th scope="col">Sales</th>
+            <th scope="col">Mean</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th scope="row">Sum</th>
+            <td>$1,000,000</td>
+            <td></td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <tr>
+        <th scope="row">Northeast</th>
+        <td>$100,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Southeast</th>
+        <td>$75,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Midwest</th>
+        <td>$125,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Mid-Atlantic</th>
+        <td>$125,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Southwest</th>
+        <td>$75,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Northwest</th>
+        <td>$100,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">California</th>
+        <td>$400,000</td>
+        <td>$142,857</td>
+    </tr>
+    </tbody>
+    
+</table>
+
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table Row and Column Highlights</title>
+    <script type='text/javascript' src='jquery/jquery-1.11.1.min.js'></script>
+    <script type="text/javascript" src="jquery-ui-1.11.1/jquery-ui.js"></script>
+    <script type='text/javascript' src="IgniteUI/js/infragistics.core.js"></script>
+    <script type='text/javascript' src="IgniteUI/js/infragistics.dv.js"></script>
+    <link rel="stylesheet" href="IgniteUI/css/themes/infragistics/infragistics.theme.css">
+    <link rel="stylesheet" href="IgniteUI/css/structure/modules/infragistics.ui.shared.css">
+    <link rel="stylesheet" href="IgniteUI/css/structure/modules/infragistics.ui.chart.css">
+    <script type='text/javascript' src="IgniteUI/js/infragistics.lob.js"></script>
+    <link rel="stylesheet" type="text/css" href="IgniteUI/css/structure/modules/infragistics.ui.grid.css">
+
+    <style>
+        #chart1
+        {
+            margin: 10px;
+            float: left;
+        }
+        #legend1
+        {
+            margin: 10px;
+            float: left;
+        }
+        #salesByRegion_container
+        {
+            clear: both;
+        }
+        #salesByRegion
+        {
+            margin: 10px;
+            max-width: 500px;
+        }
+    </style>
+    
+<script type="text/javascript">
+    var data = [{ "Region": "Northeast", "Sales": 100000, 
+	"Mean": 142857.14 },
+    { "Region": "Southeast", "Sales": 75000, "Mean": 142857.14 }, 
+    { "Region": "Midwest", "Sales": 125000, "Mean": 142857.14 },
+    { "Region": "Mid-Atlantic", "Sales": 125000, "Mean": 142857.14 },
+    { "Region": "Southwest", "Sales": 75000, "Mean": 142857.14 },
+    { "Region": "Northwest", "Sales": 100000, "Mean": 142857.14 },
+    { "Region": "California", "Sales": 400000, "Mean": 142857.14 }];
+    
+    var currSelectedIndex = -1;
+    
+    var rowLookup = {};
+    data.map(function (item,index) { 
+        rowLookup[item.Region] = index; 
+    });
+    
+    $(function () {
+        $("#chart1").igDataChart({
+            width: "500px",
+            height: "300px",
+            dataSource: data,
+            animateSeriesWhenAxisRangeChanges: true,
+            axes: [{
+                name: "xAxis",
+                type: "categoryX",
+                label: "Region",
+                interval: 1,
+                labelAngle: 45
+            }, {
+                name: "yAxis",
+                type: "numericY"
+            }],
+            series: [{
+                name: "Sales",
+                type: "column",
+                xAxis: "xAxis",
+                yAxis: "yAxis", 
+                title: "Sales",
+                showTooltip: true,
+                valueMemberPath: "Sales",
+                isTransitionInEnabled: true,
+                isHighlightingEnabled: true,
+                isCustomCategoryStyleAllowed: true,
+                transitionDuration: 1000
+            }, {
+                name: "Mean",
+                type: "column",
+                xAxis: "xAxis",
+                yAxis: "yAxis",
+                title: "Mean",
+                showTooltip: true,
+                valueMemberPath: "Mean",
+                isTransitionInEnabled: true,
+                isHighlightingEnabled: true,
+                isCustomCategoryStyleAllowed: true,
+                transitionDuration: 1000
+            }],
+            legend: { element: "legend1" },
+            assigningCategoryStyle: function (evt, ui) {
+                if (currSelectedIndex >= ui.startIndex &&
+                    currSelectedIndex <= ui.endIndex) {
+                        ui.fill = "#FFB84D";
+                }
+            },
+            seriesMouseLeftButtonUp: function (evt, ui) {
+                var index = rowLookup[ui.item.Region];
+                currSelectedIndex = index;
+                updateSelectedIndex(true);
+            }
+        });
+        
+        var updateMeans = function () {
+            var count = data.length;
+            var sum = 0;
+            data.map(function (item) { sum += item.Sales });
+            var mean = sum / count;
+            data.map(function (item) { item.Mean = mean });
+            $("#salesByRegion").igGrid("dataBind");
+            $("#chart1").igDataChart("notifyClearItems", data);
+        };
+    
+        var updateSelectedIndex = function (fromChart) {
+            if (fromChart) {
+                var rows = $("#salesByRegion").igGrid("rows");
+                var key = data[currSelectedIndex].Region;
+                var index = -1;
+                $(rows).each(function(i, ele) {
+                    if ($(ele).attr("data-id") == key) {
+                        index = i;
+                    }
+                });
+                $('#salesByRegion').igGridSelection('selectRow', index);
+            }
+            $("#chart1").igDataChart("notifyVisualPropertiesChanged", "Sales");
+            $("#chart1").igDataChart("notifyVisualPropertiesChanged", "Mean");
+        }
+    
+        $("#salesByRegion").igGrid({
+            autoCommit: true,
+            dataSource: data,
+            autoGenerateColumns: false,
+            primaryKey: "Region",
+            columns: [
+                { headerText: "Region",
+                key: "Region",
+                dataType: "string" },
+                { headerText: "Sales",
+                key: "Sales",
+                dataType: "number",
+                format: "currency" },
+                { headerText: "Mean",
+                key: "Mean",
+                dataType: "number",
+                format: "currency" }
+            ],
+            features: [
+                {
+                    name : 'Sorting',
+                    type: "local"
+                },
+                {
+                    name: "Resizing"
+                },
+                {
+                    name: "ColumnMoving",
+                    columnMovingDialogContainment: "window"
+                },
+                {
+                    name: 'Updating',
+                    enableAddRow: false,
+                    enableDeleteRow: false,
+                    editRowEnded: function (evt, ui) {
+                        updateMeans();
+                    },
+                    columnSettings: [{
+                        columnKey: "Region",
+                        editorOptions: {readOnly: true}
+                    },{
+                        columnKey: "Mean",
+                        editorOptions: {readOnly: true}
+                    }]
+                },
+                {
+                    name: "Selection",
+                    mode: 'row',
+                    rowSelectionChanged: function (evt, ui) { 
+                        currSelectedIndex = rowLookup[ui.row.id];
+                        updateSelectedIndex(false);
+                    }
+                }
+            ]
+        });
+        
+    });
+
+</script>
+
+</head>
+<body>
+
+<div id="chart1"></div>
+<div id="legend1"></div>
+<table id="salesByRegion"></table>
+
+</body>
+</html>

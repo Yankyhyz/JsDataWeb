@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Read Data from Text File</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+<h1>Get data from text file</h1>
+<div><p id="fileData"></p></div>
+</body>
+<script>
+  $( document ).ready(function() {
+    $.get('sample.txt', function(theData) {
+      $('#fileData').html(theData.replace(/\n/g,'<br>'));
+    });
+  });
+</script>
+</html>

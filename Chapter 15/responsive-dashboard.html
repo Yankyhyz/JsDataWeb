@@ -1,0 +1,373 @@
+<!doctype html>
+<html>
+<head>
+<title>US Census - Responsive Dashboard</title>
+
+<link rel="stylesheet" href="css/census-charts.css">
+</head>
+
+<body>
+
+<!-- make sure to include your API key below -->
+
+<div class="census">
+  <div class="charts">
+    <h1>
+    Census Data - New York
+    </h1>
+  
+    <section class="population">
+      <h2>
+      Population
+      </h2>
+    
+      <div id="population-chart" class="chart"></div>
+      <div id="age-chart" class="chart"></div>
+    </section>
+    
+    <section class="demographics">
+      <h2>
+      Demographics
+      </h2>
+    
+      <div id="race-chart" class="chart"></div>
+      <div id="sex-chart" class="chart"></div>
+    </section>
+  
+    <section class="housing">
+      <h2>
+      Housing
+      </h2>
+    
+      <div id="household-chart" class="chart"></div>
+      <div id="tenure-chart" class="chart"></div>
+    </section>
+  </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+
+<script>
+var api_key = "[your API key]";
+
+if ( /\s/.test(api_key) ) {
+  alert("You must enter your API key from www.census.gov/developers/");
+}
+
+function renderCharts() {
+  // sex chart
+  
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: "P0120002,P0120026",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var processed = [
+        ["Sex", "Population"],
+        ["Male", ~~data[1][0]],
+        ["Female", ~~data[1][1]]
+      ];
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Sex",
+        pieHole: 0.8,
+        pieSliceText: "none"
+      };
+
+      var chart = new google.visualization.PieChart(
+        document.getElementById("sex-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+  
+  
+  
+  // race chart
+  
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: "P0080003,P0080004,P0080005,P0080006,P0080007,P0080008,P0080009",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var races = [
+        "White",
+        "Black",
+        "American Indian or Alaskan Native",
+        "Asian",
+        "Native Hawaiian or Pacific Islander",
+        "Other",
+        "Mixed"
+      ],
+      processed = [
+        ["Race", "Population"]
+      ];
+  
+      // lose the last value (state ID)
+      data[1].pop();
+  
+      for ( i in data[1] ) {
+        processed.push([
+          races[i],
+          ~~data[1][i]
+        ]);
+      }
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Race",
+        is3D: true
+      };
+
+      var chart = new google.visualization.PieChart(
+        document.getElementById("race-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+  
+  
+  
+  // household size chart
+  
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: "H0130002,H0130003,H0130004,H0130005,H0130006,H0130007,H0130008",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var processed = [
+        ["Household Size", "Households"]
+      ];
+  
+      // lose the last value (state ID)
+      data[1].pop();
+  
+      for ( i in data[1] ) {
+        processed.push([
+          (~~i+1) + ( i == 6 ? "+" : "" ) + " Person",
+          ~~data[1][i]
+        ]);
+      }
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Household Size",
+        is3D: true
+      };
+
+      var chart = new google.visualization.PieChart(
+        document.getElementById("household-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+  
+  
+  
+  // household tenure chart
+  
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: "H0110002,H0110003,H0110004",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var processed = [
+        ["Tenure", "Housing Units"],
+        ["Owned with Mortgage", ~~data[1][0]],
+        ["Owned Outright", ~~data[1][1]],
+        ["Rented", ~~data[1][2]]
+      ];
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Housing Tenure",
+        pieHole: 0.8,
+        pieSliceText: "none"
+      };
+
+      var chart = new google.visualization.PieChart(
+        document.getElementById("tenure-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+  
+  
+  
+  // age by sex chart
+  
+  function build_age_request_string(offset) {
+    var out = "";
+
+    for ( var i = 0; i < 23; i++ ) {
+      var this_index = ("0" + (i + offset)).slice(-2);
+
+      out += "P01200" + this_index + ",";
+    }
+
+    return out;
+  }
+
+  var age_request_keys = build_age_request_string(3) + build_age_request_string(27);
+
+  age_request_keys = age_request_keys.slice(0,-1);
+
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: age_request_keys,
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var male_data   = data[1].slice(0,23),
+          female_data = data[1].slice(23,46);
+  
+      // merge the dissimilar age ranges
+  
+      function combine_vals(arr, start, end) {
+        var total = 0;
+    
+        for ( var i = start; i <= end; i++ ) {
+          total += arr[i];
+        }
+    
+        arr[start] = total;
+    
+        arr.splice( start + 1, end - start);
+    
+        return arr;
+      }
+  
+      function clean_age_range( age_data ) {
+        // convert all the values to numeric
+        for ( var i in age_data ) {
+          age_data[i] = ~~age_data[i];
+        }
+    
+        // merge values starting with highest (to preserve array keys)
+    
+        // merge 65-66 && 67-69
+        age_data = combine_vals( age_data, 17, 18 );
+    
+        // merge 60-61 & 62-64
+        age_data = combine_vals( age_data, 15, 16 );
+    
+        // merge 20, 21 & 22-24
+        age_data = combine_vals( age_data, 5, 7 );
+    
+        // merge 15-17 & 18-19
+        age_data = combine_vals( age_data, 3, 4 );
+    
+        return age_data;
+      }
+  
+      male_data = clean_age_range(male_data);
+      female_data = clean_age_range(female_data);
+  
+      var processed = [
+        ["Age", "Male", "Female"]
+      ];
+  
+      for ( var i = 0, max = male_data.length; i < max; i++ ) {
+        var row = [];
+    
+        switch(i) {
+          case 0:
+            row[0] = "Under 5";
+          break;
+      
+          default:
+            row[0] = (i * 5) + "-" + (i * 5 + 4);
+          break;
+      
+          case max - 1:
+            row[0] = (i * 5) + "+";
+          break;
+        }
+    
+        row[1] = male_data[i];
+        row[2] = female_data[i];
+    
+        processed.push(row);
+      }
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Age"
+      };
+
+      var chart = new google.visualization.ColumnChart(
+        document.getElementById("age-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+  
+  
+  
+  // population history chart
+  
+  $.ajax({
+    url: "http://api.census.gov/data/2013/pep/natstprc",
+    data: {
+      get: "POP,DATE",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var processed = [
+        ["Year", "Population"]
+      ];
+  
+      for ( i in data ) {
+        if ( i == 0 ) continue;
+        processed[i] = [ ~~data[i][1] + 2007, ~~data[i][0] ];
+      }
+
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Population Growth",
+        legend: "none"
+      };
+
+      var chart = new google.visualization.LineChart(
+        document.getElementById("population-chart")
+      );
+      chart.draw(chartData, options);
+    }
+  });
+}
+</script>
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(renderCharts);
+</script> 
+</body>
+</html>

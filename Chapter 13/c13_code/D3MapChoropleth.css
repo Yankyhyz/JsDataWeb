@@ -1,0 +1,16 @@
+.state {
+    fill: #5daecc;
+    stroke: #29658A;
+}
+
+.tooltip {
+    border-color: rgb(0,90,50);
+    background-color: rgba(255, 255, 255, 0.88);
+    -moz-box-shadow: 0 0 2px rgba(85, 85, 85, 0.86);
+    -webkit-box-shadow: 0 0 2px rgba(85, 85, 85, 0.86);
+    box-shadow: 0 0 2px rgba(85, 85, 85, 0.86);
+}
+
+h2 {
+    font-family: Verdana, Geneva, 'DejaVu Sans', sans-serif;
+}

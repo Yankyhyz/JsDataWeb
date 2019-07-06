@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JSON Data Imported</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<style>
+  table {
+	border-collapse: collapse;  
+  }
+  td {
+	width: 200px;
+	border-bottom: 1px solid #000;
+	padding: 5px; 
+	margin: 0; 
+  }
+  th { text-align: left; }
+</style>
+</head>
+
+<body>
+<h1>JSON Data Imported</h1>
+<table id="sales">
+<tr>
+<th>Territory</th>
+<th>Employees</th>
+<th>Sales</th>
+</tr>
+</table>
+<script>
+$( document ).ready(function() {
+$.getJSON("regional_sales.json", function(data) {
+  $.each(data.sales.region,function (k,v) {
+    var theTerritory = v.territory;
+    var numEmployees = v.employees;
+    var theAmount = v.amount;
+    $('#sales').append('<tr><td>' + theTerritory + '</td><td>' + numEmployees + '</td><td>$' + theAmount + '</td></tr>');
+  });
+});
+});
+</script>
+</body>
+</html>

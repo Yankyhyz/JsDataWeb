@@ -1,0 +1,1 @@
+DataTables is dual licensed as per the readme. For the purposes of this repository, the BSD license is selected.

@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<title>jStat - Getting Started</title>
+</head>
+
+<body>
+
+<p>
+View in your console
+</p>
+
+<script src="js/jstat.min.js"></script>
+
+<script>
+
+// vectors
+var myVector = [3, 6, 1, 9, 7, 5, 3, 2, 2, 1];
+
+console.log( 'vector', myVector );
+
+var vectorSum   = jStat( myVector ).sum(),
+    vectorMean  = jStat( myVector ).mean(),
+    vectorStdev = jStat( myVector ).stdev();
+    
+console.log( 'sum', vectorSum );
+console.log( 'mean', vectorMean );
+console.log( 'standard dev', vectorStdev );
+
+// matrices
+var myMatrix = [[2, 5, 8], [6, 1, 4]];
+
+console.log( 'matrix', myMatrix );
+
+var matrixSum  = jStat( myMatrix ).sum(),
+    matrixMean = jStat( myMatrix ).mean();
+
+console.log( 'matrix sum & mean', matrixSum, matrixMean );
+
+// min and max
+    
+var matrixMin = jStat( myMatrix ).min(),
+    matrixMax = jStat( myMatrix ).max();
+
+console.log( 'min & max', matrixMin, matrixMax );
+
+// multiply
+
+var timesTwo = jStat( myMatrix ).multiply( 2 );
+
+console.log( 'multiply by 2', timesTwo );
+
+// map
+
+var mapped = jStat( myMatrix ).map( function( x ) {
+  return x % 3;
+});
+
+console.log( 'mapped', mapped );
+
+
+</script>
+</body>
+</html>

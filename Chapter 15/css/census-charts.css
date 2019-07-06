@@ -1,0 +1,64 @@
+body {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+}
+
+h1, h2 {
+  font-weight: normal;
+}
+
+h2 {
+  padding: .5em 1em;
+  background: #DDD;
+}
+
+.census {
+  position: relative;
+  overflow: hidden;
+}
+
+/* dropdown */
+
+.state-select {
+  position: absolute;
+  top: .8em;
+  right: 0;
+  font-size: 2em;
+}
+
+/* charts */
+
+section {
+  overflow: hidden;
+}
+
+.chart {
+  height: 350px;
+}
+
+@media all and (min-width: 700px) and (max-width: 1000px) {
+  .demographics .chart, .housing .chart {
+    width: 50%;
+    float: left;
+  }
+}
+
+@media all and (min-width: 1001px) {
+  .population:not(.single) {
+    width: 66.6666%;
+    float: left;
+  }
+  
+  .demographics {
+    width: 33.3333%;
+    float: right;
+  }
+  
+  .housing {
+    clear: both;
+  }
+  
+  .housing .chart {
+    width: 50%;
+    float: left;
+  }
+}

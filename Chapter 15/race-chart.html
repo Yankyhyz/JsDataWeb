@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<title>US Census - Race Chart</title>
+</head>
+
+<body>
+
+<!-- make sure to include your API key below -->
+
+<div id="race-chart"></div>
+
+<script src="js/jquery.min.js"></script>
+
+<script>
+var api_key = "[your API key]";
+
+if ( /\s/.test(api_key) ) {
+  alert("You must enter your API key from www.census.gov/developers/");
+}
+
+function renderCharts() {
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: "P0080003,P0080004,P0080005,P0080006,P0080007,P0080008,P0080009",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var races = [
+        "White",
+        "Black",
+        "American Indian or Alaskan Native",
+        "Asian",
+        "Native Hawaiian or Pacific Islander",
+        "Other",
+        "Mixed"
+      ],
+      processed = [
+        ["Race", "Population"]
+      ];
+  
+      // lose the last value (state ID)
+      data[1].pop();
+  
+      for ( i in data[1] ) {
+        processed.push([
+          races[i],
+          ~~data[1][i]
+        ]);
+      }
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Race",
+        is3D: true
+      };
+
+      var chart = new google.visualization.PieChart(
+        document.getElementById("race-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+}
+</script>
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(renderCharts);
+</script> 
+</body>
+</html>

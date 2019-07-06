@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<title>jStat - Probability Distributions</title>
+</head>
+
+<body>
+
+<p>
+View in your console
+</p>
+
+<script src="js/jstat.min.js"></script>
+
+<script>
+
+var myVector = [3, 6, 1, 9, 7, 5, 3, 2, 2, 1],
+    mean  = jStat( myVector ).mean(),
+    stdev = jStat( myVector ).stdev();
+    
+console.log('vector: ' + myVector, 'mean: ' + mean, 'stdev: ' + stdev);
+
+var myNormal = jStat.normal( mean, stdev ),
+    pdf = myNormal.pdf(5),
+    cdf = myNormal.cdf(5),
+    inv = myNormal.inv(5);
+
+console.log( '5 - PDF: ' + pdf + ', CDF: ' + cdf + ', INV:' + inv );
+
+</script>
+</body>
+</html>

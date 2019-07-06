@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table With Semantic Markup</title>
+
+<style type="text/css">
+    thead { color: orange; }
+    tbody { color: gray; }
+    tfoot { color: red; }
+</style>
+</head>
+<body>
+<table>
+    <caption>Sales By Region
+        <details>
+            <summary>details</summary>
+            <p>This table shows a breakdown of recent sales by region.
+            It also includes a column that shows the mean value of sales
+            for that period.</p>
+        </details>
+    </caption>
+    <thead>
+        <tr>
+            <th scope="col">Region</th> 
+            <th scope="col">Sales</th>
+            <th scope="col">Mean</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th scope="row">Sum</th>
+            <td>$1,000,000</td>
+            <td></td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <tr>
+        <th scope="row">Northeast</th>
+        <td>$100,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Southeast</th>
+        <td>$75,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Midwest</th>
+        <td>$125,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Mid-Atlantic</th>
+        <td>$125,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Southwest</th>
+        <td>$75,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Northwest</th>
+        <td>$100,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">California</th>
+        <td>$400,000</td>
+        <td>$142,857</td>
+    </tr>
+    </tbody>
+    
+</table>
+
+</body>
+</html>

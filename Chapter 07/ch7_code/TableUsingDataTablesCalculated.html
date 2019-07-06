@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table Row and Column Highlights</title>
+
+<link rel="stylesheet" type="text/css" href="datatables/media/css/jquery.dataTables_themeroller.css">
+<link rel="stylesheet" type="text/css" href="jquery-ui-1.11.1/jquery-ui.css">
+<script type="text/javascript" charset="utf8" src="jquery/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" charset="utf8" src="jquery-ui-1.11.1/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf8" src="datatables/media/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+    function usCurrencyToFloat(currency) {
+        currency = currency.replace(/\$/g, '');
+        currency = currency.replace(/,/g, '');
+        return parseFloat(currency);
+    }
+    
+    function floatToUSCurrency(value) {
+        var numString = value.toFixed(2),
+        parts = numString.split('.'),
+        outParts = [],
+        beforeDecimal = "0",
+        afterDecimal = "00",
+        currSegment;
+        
+        beforeDecimal = parts[0];
+        afterDecimal = parts[1];
+        
+        while (beforeDecimal.length > 3) {
+            currSegment = beforeDecimal.substring(
+                beforeDecimal.length - 3, 
+                beforeDecimal.length);
+            beforeDecimal = beforeDecimal.substring(
+                0, 
+                beforeDecimal.length - 3);
+            outParts.unshift(currSegment);
+        }
+        if (beforeDecimal.length > 0) {
+            outParts.unshift(beforeDecimal);
+        }
+        
+        return '$' + outParts.join(',') + '.' + afterDecimal;
+    }
+
+    $(function () {
+        $("#salesByRegion").dataTable({
+            bJQueryUI: true,
+            aaSorting: [ [3, "desc"], [1, "desc"] ],
+            aoColumnDefs: [ 
+            {
+                mRender: function ( data, type, row ) {
+                    var difference =
+                    usCurrencyToFloat(row[1]) - usCurrencyToFloat(row[2]);
+                    
+                    return floatToUSCurrency(difference);
+                },
+                aTargets: [ 3 ]
+            }]
+        });
+    });
+</script>
+
+</head>
+<body>
+
+<table id="salesByRegion">
+    <caption>Sales By Region</caption>
+    <colgroup>
+        <col class="col-header">
+        <col class="col-amount">
+        <col class="col-mean">
+    </colgroup>
+    <thead>
+        <tr>
+            <th scope="col">Region</th> 
+            <th scope="col">Sales</th>
+            <th scope="col">Mean</th>
+            <th scope="col">Difference</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th scope="row">Sum</th>
+            <td>$1,000,000</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <tr>
+        <th scope="row">Northeast</th>
+        <td>$100,000</td>
+        <td>$142,857</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row">Southeast</th>
+        <td>$75,000</td>
+        <td>$142,857</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row">Midwest</th>
+        <td>$125,000</td>
+        <td>$142,857</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row">Mid-Atlantic</th>
+        <td>$125,000</td>
+        <td>$142,857</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row">Southwest</th>
+        <td>$75,000</td>
+        <td>$142,857</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row">Northwest</th>
+        <td>$100,000</td>
+        <td>$142,857</td>
+        <td></td>
+    </tr>
+    <tr>
+        <th scope="row">California</th>
+        <td>$400,000</td>
+        <td>$142,857</td>
+        <td></td>
+    </tr>
+    </tbody>
+    
+</table>
+
+</body>
+</html>

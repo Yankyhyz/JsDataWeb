@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JSON Data Charted</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<style>
+  #outerWrapper {
+    width: 800px;  
+    margin: 1em auto;
+  }
+  canvas {
+    border: 1px solid #000;  
+  }
+</style>
+</head>
+
+<body>
+<h1>JSON Data Charted</h1>
+<div id="outerWrapper">
+  <canvas id="chart1" width="600" height="400"></canvas>
+</div>
+<script>
+$( document ).ready(function() {
+  var theChart = document.getElementById('chart1');
+  var chartHeight = 400;
+  var theWidth = 75;
+  var theSpace = 100;
+  var theX = 0;
+  var theY = 0;
+  var theFills = ['orange','blue','red','green'];
+  var i = 0;
+  
+  if (theChart.getContext){
+    var theContext = theChart.getContext('2d');
+    $.getJSON("regional_sales.json", function(data) {
+      $.each(data.sales.region,function (k,v) {
+        var theTerritory = v.territory;
+        var theHeight = parseInt(v.amount.replace(/,/g, ''))/1000;
+        theY = chartHeight - theHeight;
+        theX = theX + theSpace;
+        theContext.fillStyle = theFills[i];
+        theContext.fillRect(theX,theY,theWidth,theHeight);
+        theContext.fillStyle = 'black';
+        theContext.font = '12pt Arial';
+        theContext.fillText(theTerritory,theX, theY-20);
+        ++i;
+      });
+    });
+  }
+});
+</script>
+</body>
+</html>

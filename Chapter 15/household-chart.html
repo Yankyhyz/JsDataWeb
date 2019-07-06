@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<title>US Census - Household Size Chart</title>
+</head>
+
+<body>
+
+<!-- make sure to include your API key below -->
+
+<div id="household-chart"></div>
+
+<script src="js/jquery.min.js"></script>
+
+<script>
+var api_key = "[your API key]";
+
+if ( /\s/.test(api_key) ) {
+  alert("You must enter your API key from www.census.gov/developers/");
+}
+
+function renderCharts() {
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: "H0130002,H0130003,H0130004,H0130005,H0130006,H0130007,H0130008",
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var processed = [
+        ["Household Size", "Households"]
+      ];
+  
+      // lose the last value (state ID)
+      data[1].pop();
+  
+      for ( i in data[1] ) {
+        processed.push([
+          (~~i+1) + ( i == 6 ? "+" : "" ) + " Person",
+          ~~data[1][i]
+        ]);
+      }
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Household Size",
+        is3D: true
+      };
+
+      var chart = new google.visualization.PieChart(
+        document.getElementById("household-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+}
+</script>
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(renderCharts);
+</script> 
+</body>
+</html>

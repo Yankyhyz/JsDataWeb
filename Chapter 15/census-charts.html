@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<title>Census Data</title>
+
+<link rel="stylesheet" href="css/census-charts.css">
+</head>
+
+<body>
+
+<div class="census">
+  <div class="charts">
+    <h1>
+    Census Data
+    </h1>
+    
+    <p>
+    Loading...
+    </p>
+  </div>
+</div>
+
+<script type="template" class="state-dropdown-tpl">
+  <select name="state" class="state-select">
+  <% _.each(states, function(state) {
+    %> <option value="<%- state.fips %>"><%- state.name %></option>
+  <% }); %>
+  </select>
+</script>
+
+<script type="template" class="census-tpl">
+  <h1>
+  Census Data - <%= loc_str %>
+  </h1>
+  
+  <section class="population<%- (loc === "00" ? " single" : "" ) %>">
+    <h2>
+    Population
+    </h2>
+    
+    <div id="population-chart" class="chart"></div>
+    
+    <% 
+    if ( loc !== "00" ) {
+    %>
+    <div id="age-chart" class="chart"></div>
+    <%
+    }
+    %>
+  </section>
+  
+  <% 
+  if ( loc !== "00" ) {
+  %>
+  <section class="demographics">
+    <h2>
+    Demographics
+    </h2>
+    
+    <div id="race-chart" class="chart"></div>
+    
+    <div id="sex-chart" class="chart"></div>
+  </section>
+  
+  <section class="housing">
+    <h2>
+    Housing
+    </h2>
+    
+    <div id="household-chart" class="chart"></div>
+    
+    <div id="tenure-chart" class="chart"></div>
+  </section>
+  <%
+  }
+  %>
+</script>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/underscore-min.js"></script>
+<script src="js/backbone-min.js"></script>
+<script src="https://www.google.com/jsapi"></script>
+
+<script src="js/census-charts.js"></script>
+
+</body>
+</html>

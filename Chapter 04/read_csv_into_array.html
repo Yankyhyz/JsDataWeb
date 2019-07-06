@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Read Data from Text File into Objects and Output as Table</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="http://jquery-csv.googlecode.com/git/src/jquery.csv.js"></script>
+
+<body>
+<h1>Pull data from CSV file into an object and output as table</h1>
+<div class="result">
+  <table id="theResult" border="1"></table>
+</div>
+</body>
+<script>
+$( document ).ready(function() {
+  $.get('stores.csv', function(theData) {
+    var data = $.csv.toObjects(theData);
+    var theHtml = createTable(data);
+    $('#theResult').html(theHtml);
+  });
+});
+
+function createTable(data) {
+  var html = '';
+  
+  if(data[0].constructor === Object) {
+    html += '<tr>\r\n';
+    for(var item in data[0]) {
+      html += '<th>' + item + '</th>\r\n';
+    }
+    html += '</tr>\r\n';
+    
+    for(var row in data) {
+      html += '<tr>\r\n';
+      for(var item in data[row]) {
+        html += '<td>' + data[row][item] + '</td>\r\n';
+      }
+      html += '</tr>\r\n';
+    }
+  }
+  return html;
+}
+</script>
+</html>

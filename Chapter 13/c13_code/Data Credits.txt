@@ -1,0 +1,8 @@
+pupld11b.geojson
+United States Of America. Institute of Musem and Library Services. Public Library Survey (PLS) 2011. Maint. Justin Grimes. Washington DC: Institute of Museum and Library Services, 2011. Web. 30 Apr. 2014. <http://catalog.data.gov/dataset/public-library-survey-pls-2011> 
+
+gz_2010_us_040_00_20m.zip
+United States of America. U.S. Department of Commerce, U.S. Census Bureau, Geography Division. 2010 Cartographic Boundary File, State for United States, 1:20,000,000. Washington DC: United States Census Bureau, 2010. 2010 Census. Web. 30 Apr. 2014. <http://www.census.gov/geo/maps-data/data/cbf/cbf_state.html>.
+
+table03.xls
+United States of America. USDA. ERS. Agricultural Productivity in the U.S. Washington DC: United States Department of Agriculture, 2013. Web. 2 May 2014. <http://www.ers.usda.gov/data-products/agricultural-productivity-in-the-us.aspx>.

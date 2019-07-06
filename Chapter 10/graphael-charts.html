@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+<title>gRaphael - Building Basic Charts</title>
+
+<style>
+div {
+  margin: 2em;
+}
+
+div:after {
+  content: "";
+  border-bottom: 1px solid #EEE;
+  display: block;
+}
+
+div:last-of-type:after {
+  display: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="pie-chart"></div>
+
+<div id="line-chart"></div>
+
+<div id="bar-chart"></div>
+
+<!-- raphael & graphael core -->
+<script src="js/raphael-min.js"></script>
+<script src="js/g.raphael.js"></script>
+
+<!-- graphael chart modules -->
+<script src="js/g.pie.js"></script>
+<script src="js/g.line.js"></script>
+<script src="js/g.bar.js"></script>
+
+
+<script>
+
+//------- pie chart -------//
+
+var paper = Raphael(document.getElementById('pie-chart'), 500, 300);
+
+paper.piechart(250, 150, 120, [80, 55, 32, 21, 9, 5, 2], {
+  legend: [
+    'croissants',
+    'bagels',
+    'doughnuts',
+    'muffins',
+    'danishes',
+    'scones',
+    'coffee cakes'
+  ]
+});
+
+//------- line chart -------//
+
+var paper = Raphael(document.getElementById('line-chart'), 500, 300);
+
+var xVals = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50],
+    yVals = [46, 75, 91, 64, 82, 41, 53, 47, 73, 76, 62],
+    yVals2 = [71, 51, 55, 40, 62, 66, 42, 81, 84, 57, 73];
+    
+paper.linechart(20, 0, 500, 280, xVals, [yVals, yVals2],
+  {axis: '0 0 1 1', axisxstep: 10, shade: true, smooth: true, symbol: 'circle'});
+
+//------- bar chart -------//
+  
+var paper = Raphael(document.getElementById('bar-chart'), 500, 300);
+
+var vals = [46, 75, 91, 64, 82, 41, 53, 47, 73, 76, 62],
+    vals2 = [71, 51, 55, 40, 62, 66, 42, 81, 84, 57, 73];
+    
+paper.barchart(0, 0, 500, 300, [vals, vals2]);
+
+// labeling the bar chart
+
+Raphael.fn.labelBarChart = function(x_start, y_start, width, labels, textAttr) {
+  var paper = this;
+  
+  // offset x_start and width for bar chart gutters
+  x_start += 10;
+  width -= 20;
+  
+  var labelWidth = width / labels.length;
+  
+  // offset x_start to center under each column
+  x_start += labelWidth / 2;
+  
+  for ( var i = 0, len = labels.length; i < len; i++ ) {
+    paper.text( x_start + ( i * labelWidth ), y_start, labels[i] ).attr( textAttr );
+  }
+};
+
+var labels = ['Col 1', 'Col 2', 'Col 3', 'Col 4', 'Col 5', 'Col 6',
+  'Col 7', 'Col 8'];
+
+paper.labelBarChart(0, 290, 500, labels, {'font-size': 14});
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+Food_Display_Table.xml
+USA. Department Of Agriculture. Food and Nutrition Service. MyPyramid Food Raw Data. Comp. Jackie Haven. Food and Nutrition Service, Department of Agriculture, n.d. Web. 24 June 2014. <http://catalog.data.gov/dataset/mypyramid-food-raw-data-f9ed6>.

@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Alert Data from Text File</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+<h1>Alert data from text file</h1>
+<div><p id="fileData"></p></div>
+</body>
+<script>
+  $( document ).ready(function() {
+    jQuery.get('sample.txt', function(theData) {
+      alert(theData);
+    });
+  });
+</script>
+</html>

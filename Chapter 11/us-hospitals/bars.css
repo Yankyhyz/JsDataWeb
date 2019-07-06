@@ -1,0 +1,19 @@
+.bar {
+  fill: steelblue;
+}
+
+.axis-container {
+  font: 9px sans-serif;
+  pointer-events: none;
+}
+
+.axis-container path,
+.axis-container line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis-container path {
+  display: none;
+}

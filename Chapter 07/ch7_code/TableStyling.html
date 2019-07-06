@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Table With Styled Semantic Markup</title>
+
+<style type="text/css">
+/* Remove excess interstitial borders and padding
+establish an outer border */
+table {
+        border-collapse: collapse;
+        border: 1px solid #4C4C4C;
+}
+/* Add a dotted border around both header cells
+and normal cells */
+th, td {
+    border: 1px dotted #707070;
+}
+/* Add some padding around the header content
+removing the cramped spacing. Make the background
+color of the headers green. */
+th {
+    background: #C2F0C2;
+    padding: 5px;
+}
+/* Darken the green background for just the column 
+headers so that they use a different green than the
+row headers. The fact that the column headers are
+within a thead element helps to discriminate them 
+from the row headers. */
+thead th {
+    background: #9BC09B;
+}
+/* Set the background behind the caption to a dark
+gray and the caption text to white. */
+caption {
+    background: #4C4C4C;
+    padding: 5px;
+    color: white;
+}
+/* This sets a solid bottom border to just the column
+headers. This is achieved by using an attribute selector
+to select just the th elements with scope set to col. */
+th[scope=col] {
+    border-bottom: 2px solid #707070;
+}
+/* This sets a solid right border to just the row headers.
+This is achieved by using an attribute selector to
+select just the th elements with scope set to row. It 
+also left aligns these headers */
+th[scope=row] {
+    border-right: 2px solid #707070;
+    text-align: left;
+}
+/* This right aligns all the normal cell content and
+adds some padding to them */
+td {
+    text-align: right;
+    padding: 5px;
+}
+/* This sets a different background to just the row
+header that resides in the footer row. */
+tfoot th {
+    background: #BBBBD1;
+}
+/* This sets a different background to just the 
+normal cells that reside in the footer row. */
+tfoot td {
+    background: #CFCFDF;
+    color: #8D1919;
+}
+
+</style>
+</head>
+<body>
+
+<table>
+    <caption>Sales By Region</caption>
+    <colgroup>
+        <col class="col-header">
+        <col class="col-amount">
+        <col class="col-mean">
+    </colgroup>
+    <thead>
+        <tr>
+            <th scope="col">Region</th> 
+            <th scope="col">Sales</th>
+            <th scope="col">Mean</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th scope="row">Sum</th>
+            <td>$1,000,000</td>
+            <td></td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <tr>
+        <th scope="row">Northeast</th>
+        <td>$100,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Southeast</th>
+        <td>$75,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Midwest</th>
+        <td>$125,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Mid-Atlantic</th>
+        <td>$125,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Southwest</th>
+        <td>$75,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">Northwest</th>
+        <td>$100,000</td>
+        <td>$142,857</td>
+    </tr>
+    <tr>
+        <th scope="row">California</th>
+        <td>$400,000</td>
+        <td>$142,857</td>
+    </tr>
+    </tbody>
+    
+</table>
+
+</body>
+</html>

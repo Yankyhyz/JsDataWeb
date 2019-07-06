@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+<title>Raphael - Getting Started</title>
+</head>
+
+<body>
+
+<div id="my-svg"></div>
+
+<div id="my-svg-2"></div>
+
+<script src="js/raphael-min.js"></script>
+
+<script>
+
+var paper = Raphael(document.getElementById('my-svg'), 500, 300);
+
+var rect = paper.rect(50, 25, 200, 150);
+rect.attr('fill', '#00F');
+
+var circle = paper.circle(300, 200, 100);
+circle.attr('fill', '#F00');
+circle.attr('stroke-width', 0);
+
+
+//***************//
+
+var paper = Raphael(document.getElementById('my-svg-2'), 500, 300);
+
+// unsimplified version
+// var triangle = paper.path('M250,50 L100,250 L400,250 L250,50');
+
+var triangle = paper.path('M250,50 L100,250 L400,250 Z');
+
+//triangle.animate({transform: 'r 360'}, 4000, 'bounce');
+
+triangle.animate({transform: 'r 360 s 0.2'}, 4000, '<>');
+
+triangle.attr('fill', 'rgba(0,0,0,0)');
+
+triangle.node.onclick = function() {
+  triangle.attr('fill', 'rgba(255,0,0,1)');
+};
+
+</script>
+</body>
+</html>

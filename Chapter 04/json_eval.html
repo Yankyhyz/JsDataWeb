@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JSON Object Example</title>
+</head>
+
+<body>
+<h1>JSON Object example</h1>
+<script>
+var jsonObj = { "sales": [ 
+{"region": "Northeast", "employees":150, "amount":"115,000"}, 
+  {"region": "Southeast", "employees":125, "amount":"95,000"}, 
+  {"region": "West", "employees":325, "amount":"265,000"}
+  ] 
+};
+var theAmount = jsonObj.sales[1].amount;
+alert(theAmount);
+</script>
+</script>
+</body>
+</html>

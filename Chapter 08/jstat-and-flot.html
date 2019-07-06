@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<title>jStat & Flot - Rendering Probability Distributions</title>
+
+<style>
+.flot {
+  width: 500px;
+  height: 300px;
+  margin: 1em;
+}
+</style>
+</head>
+
+<body>
+
+<div id="flot" class="flot"></div>
+
+<div id="flot-2" class="flot"></div>
+
+<script src="js/jstat.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.flot.min.js"></script>
+
+<script>
+
+var myNormal = jStat.normal( 176.3, 7 );
+
+// create a coordinate sequence for PDF
+var normalPdf = jStat.seq( 160, 192, 100, function(x) {
+  return [x, myNormal.pdf(x)];
+});
+
+// create a coordinate sequence for CDF
+var normalCdf = jStat.seq( 160, 192, 100, function(x) {
+  return [x, myNormal.cdf(x)];
+});
+
+$('#flot').plot([ normalPdf ]);
+
+$('#flot-2').plot([ normalCdf ]);
+
+</script>
+</body>
+</html>

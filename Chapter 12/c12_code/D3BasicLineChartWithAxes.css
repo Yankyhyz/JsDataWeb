@@ -1,0 +1,19 @@
+.line {
+    stroke: #4DDB94;
+    fill: transparent;
+    stroke-width: 3px;
+}
+.y.axis path {
+    display: none;
+}
+.axis {
+    font: 20px Verdana;
+    fill: #444444;
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #999999;
+    shape-rendering: crispEdges;
+}
+

@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+<title>US Census - Age By Sex Chart</title>
+</head>
+
+<body>
+
+<!-- make sure to include your API key below -->
+
+<div id="age-chart"></div>
+
+<script src="js/jquery.min.js"></script>
+
+<script>
+var api_key = "[your API key]";
+
+if ( /\s/.test(api_key) ) {
+  alert("You must enter your API key from www.census.gov/developers/");
+}
+
+function renderCharts() {
+  // build the request string
+  function build_age_request_string(offset) {
+    var out = "";
+
+    for ( var i = 0; i < 23; i++ ) {
+      var this_index = ("0" + (i + offset)).slice(-2);
+
+      out += "P01200" + this_index + ",";
+    }
+
+    return out;
+  }
+
+  var age_request_keys = build_age_request_string(3) + build_age_request_string(27);
+
+  age_request_keys = age_request_keys.slice(0,-1);
+  
+  // make the request and render the chart
+  $.ajax({
+    url: "http://api.census.gov/data/2010/sf1",
+    data: {
+      get: age_request_keys,
+      for: "state:36",
+      key: api_key
+    },
+    success: function(data) {
+      var male_data   = data[1].slice(0,23),
+          female_data = data[1].slice(23,46);
+  
+      // merge the dissimilar age ranges
+  
+      function combine_vals(arr, start, end) {
+        var total = 0;
+    
+        for ( var i = start; i <= end; i++ ) {
+          total += arr[i];
+        }
+    
+        arr[start] = total;
+    
+        arr.splice( start + 1, end - start);
+    
+        return arr;
+      }
+  
+      function clean_age_range( age_data ) {
+        // convert all the values to numeric
+        for ( var i in age_data ) {
+          age_data[i] = ~~age_data[i];
+        }
+    
+        // merge values starting with highest (to preserve array keys)
+    
+        // merge 65-66 && 67-69
+        age_data = combine_vals( age_data, 17, 18 );
+    
+        // merge 60-61 & 62-64
+        age_data = combine_vals( age_data, 15, 16 );
+    
+        // merge 20, 21 & 22-24
+        age_data = combine_vals( age_data, 5, 7 );
+    
+        // merge 15-17 & 18-19
+        age_data = combine_vals( age_data, 3, 4 );
+    
+        return age_data;
+      }
+  
+      male_data = clean_age_range(male_data);
+      female_data = clean_age_range(female_data);
+  
+      var processed = [
+        ["Age", "Male", "Female"]
+      ];
+  
+      for ( var i = 0, max = male_data.length; i < max; i++ ) {
+        var row = [];
+    
+        switch(i) {
+          case 0:
+            row[0] = "Under 5";
+          break;
+      
+          default:
+            row[0] = (i * 5) + "-" + (i * 5 + 4);
+          break;
+      
+          case max - 1:
+            row[0] = (i * 5) + "+";
+          break;
+        }
+    
+        row[1] = male_data[i];
+        row[2] = female_data[i];
+    
+        processed.push(row);
+      }
+  
+      var chartData = google.visualization.arrayToDataTable(processed);
+
+      var options = {
+        title: "Age"
+      };
+
+      var chart = new google.visualization.ColumnChart(
+        document.getElementById("age-chart")
+      );
+  
+      chart.draw(chartData, options);
+    }
+  });
+}
+</script>
+
+<script src="https://www.google.com/jsapi"></script>
+<script>
+google.load("visualization", "1", {packages:["corechart"]});
+google.setOnLoadCallback(renderCharts);
+</script> 
+</body>
+</html>

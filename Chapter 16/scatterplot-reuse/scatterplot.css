@@ -1,0 +1,15 @@
+svg.scatterplot {
+  font: 12px sans-serif;
+}
+
+svg.scatterplot .axis path,
+svg.scatterplot .axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+svg.scatterplot .point {
+  fill: #F3F3F3;
+  stroke: #333333;
+}

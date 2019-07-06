@@ -1,0 +1,4 @@
+AAPL.json
+Quandl Open Data, Apple Inc. (AAPL) Prices, Dividends, Splits and Trading Volume, 2014, Distributed By Quandl, http://www.quandl.com/WIKI/AAPL
+http://www.quandl.com/api/v1/datasets/WIKI/AAPL.json?&trim_start=1984-09-07&trim_end=1994-09-07&sort_order=asc 
+ 

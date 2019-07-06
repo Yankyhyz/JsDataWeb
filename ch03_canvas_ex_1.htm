@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Canvas Example 1</title>
+<script type="text/javascript">
+  function drawCanvas(){
+    var theChart = document.getElementById('chart1');
+    if (theChart.getContext){
+      var theContext = theChart.getContext('2d');
+	  theContext.fillRect(50,200,100,200);
+    }
+  }
+</script>
+<style>
+	#outerWrapper {
+		width: 800px;	
+		margin: 1em auto;
+	}
+	canvas {
+		border: 1px solid #000;	
+	}
+</style>
+</head>
+
+<body onLoad="drawCanvas();">
+<div id="outerWrapper">
+  <canvas id="chart1" width="600" height="400"><img src="images/altchart1.jpg" width="600" height="400"></canvas>
+</div>
+</body>
+</html>

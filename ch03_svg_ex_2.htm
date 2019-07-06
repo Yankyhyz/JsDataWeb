@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SVG Example - Filters</title>
+<style>
+	#outerWrapper {
+		width: 800px;	
+		margin: 1em auto;
+	}
+	svg {
+		border: 1px solid #000;	
+	}
+</style>
+</head>
+
+<body>
+<div id="outerWrapper">
+<svg height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="filterDropShadow" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceGraphic" dx="20" dy="20" />
+      <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+      values="0.2 0 0 0 0 0 0.2 0 0 0 0 0 0.2 0 0 0 0 0 1 0" />
+      <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+  </defs>
+<circle id="circle1" cx="400" cy="200" r="50" fill="blue" filter="url(#filterDropShadow)" />
+</svg>
+</div>
+</body>
+</html>
